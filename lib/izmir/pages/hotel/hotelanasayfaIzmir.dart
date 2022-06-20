@@ -10,22 +10,21 @@ class hotelanasayfapageIzmir extends StatefulWidget {
       olanak1,
       olanak2,
       olanak3,
-      olanak4,
-      olanak5;
+      olanak4;
   final int tel, fiyat;
   const hotelanasayfapageIzmir(
-      this.adi,
-      this.adres,
-      this.fiyat,
-      this.fotograf,
-      this.hakkinda,
-      this.puan,
-      this.tel,
-      this.olanak1,
-      this.olanak2,
-      this.olanak3,
-      this.olanak4,
-      this.olanak5);
+    this.adi,
+    this.adres,
+    this.fiyat,
+    this.fotograf,
+    this.hakkinda,
+    this.puan,
+    this.tel,
+    this.olanak1,
+    this.olanak2,
+    this.olanak3,
+    this.olanak4,
+  );
 
   @override
   State<hotelanasayfapageIzmir> createState() => _hotelanasayfapageIzmirState();
@@ -242,17 +241,6 @@ class _hotelanasayfapageIzmirState extends State<hotelanasayfapageIzmir> {
                                 right: 35, left: 35, top: 7),
                             child: Row(
                               children: [
-                                Text(
-                                  "-${widget.olanak5}",
-                                  style: TextStyle(
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15,
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 20,
-                                ),
                                 Text(
                                   "-${widget.olanak4}",
                                   style: TextStyle(

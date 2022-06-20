@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 class tarihiyerlerdetayAnkarapage extends StatefulWidget {
-  final String adi, hakkinda, fotograf, adres, semt;
+  final String adi, hakkinda, fotograf, adres, semt, ulasim;
 
-  const tarihiyerlerdetayAnkarapage(
-      this.adi, this.adres, this.fotograf, this.hakkinda, this.semt);
+  const tarihiyerlerdetayAnkarapage(this.adi, this.adres, this.fotograf,
+      this.hakkinda, this.semt, this.ulasim);
 
   @override
   State<tarihiyerlerdetayAnkarapage> createState() =>
@@ -166,6 +166,32 @@ class _tarihiyerlerdetayAnkarapageState
                                 ),
                                 children: <TextSpan>[
                                   TextSpan(text: widget.hakkinda),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 35, top: 20),
+                            child: Text(
+                              "Ulaşim Bilgisi",
+                              style: TextStyle(
+                                  color: Color(0xff2C1E40),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                left: 35, right: 35, top: 10),
+                            child: RichText(
+                              text: TextSpan(
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
+                                  color: Colors.grey,
+                                ),
+                                children: <TextSpan>[
+                                  TextSpan(text: widget.ulasim),
                                 ],
                               ),
                             ),

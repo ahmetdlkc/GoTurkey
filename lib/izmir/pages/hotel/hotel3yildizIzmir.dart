@@ -82,26 +82,24 @@ class _hotel3yildizIzmirpageState extends State<hotel3yildizIzmirpage> {
                                         hotel3yildiz[index]["Olanak3"];
                                     String olanak4 =
                                         hotel3yildiz[index]["Olanak4"];
-                                    String olanak5 =
-                                        hotel3yildiz[index]["Olanak5"];
 
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
                                               hotelanasayfapageIzmir(
-                                                  adi,
-                                                  adres,
-                                                  fiyat,
-                                                  fotograf,
-                                                  hakkinda,
-                                                  puan,
-                                                  tel,
-                                                  olanak1,
-                                                  olanak2,
-                                                  olanak3,
-                                                  olanak4,
-                                                  olanak5)),
+                                                adi,
+                                                adres,
+                                                fiyat,
+                                                fotograf,
+                                                hakkinda,
+                                                puan,
+                                                tel,
+                                                olanak1,
+                                                olanak2,
+                                                olanak3,
+                                                olanak4,
+                                              )),
                                     );
                                   },
                                   child: Container(

@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:goturkey/istanbul/materials/appbar%C4%B0sthotel.dart';
 import 'package:goturkey/istanbul/pages/hotel/hotelanasayfa.dart';
 import 'package:goturkey/materials/appbar.dart';
 
@@ -17,6 +18,7 @@ class _hotel5yildizpageState extends State<hotel5yildizpage> {
   @override
   Widget build(BuildContext context) {
     List<dynamic> hotel5yildiz = [];
+    TextEditingController _searchcontroller = TextEditingController();
     String docid;
 
     final _database = FirebaseFirestore.instance;
@@ -29,10 +31,47 @@ class _hotel5yildizpageState extends State<hotel5yildizpage> {
 
     return SafeArea(
       child: Scaffold(
-        appBar: appbarekle(context, "5 Yıldızlı Hoteller"),
+        appBar: AppBar(
+          backgroundColor: Color(0xffE7EEF5),
+          elevation: 0,
+          leading: InkWell(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(top: 10, left: 25),
+              child: Icon(
+                Icons.arrow_back_ios,
+                size: 25,
+                color: Color(0xff2C1E40),
+              ),
+            ),
+          ),
+          title: Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: Container(
+              height: 40,
+              width: 270,
+              child: TextField(
+                controller: _searchcontroller,
+                decoration: InputDecoration(
+                  suffixIcon: Icon(
+                    Icons.search,
+                    color: Colors.black,
+                  ),
+                  labelText: "5 Yıldızlı Hoteller",
+                  hintText: "Hotel Arayınız",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
         backgroundColor: Color(0xffE7EEF5),
         body: Padding(
-          padding: const EdgeInsets.only(top: 20),
+          padding: const EdgeInsets.only(top: 10),
           child: StreamBuilder<QuerySnapshot>(
             stream: kategoriRef.snapshots(),
             builder: (BuildContext context,

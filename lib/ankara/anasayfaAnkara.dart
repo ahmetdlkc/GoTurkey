@@ -1,8 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:goturkey/ankara/pages/hotel/hotelyildizAnkara.dart';
 import 'package:goturkey/ankara/pages/manzaralar/manzaralaranaAnkara.dart';
 import 'package:goturkey/ankara/pages/materials/navigation.dart';
+import 'package:goturkey/ankara/pages/restorant/restorananaAnkara.dart';
 import 'package:goturkey/ankara/pages/tarihiyerler/tarihiyerleranaAnkara.dart';
+import 'package:goturkey/ankara/pages/tarihiyerler/tarihiyerlerdetayAnkara.dart';
 import 'package:goturkey/arasecimler/sehirsec.dart';
 
 class anasayfaAnkarapage extends StatefulWidget {
@@ -15,6 +18,15 @@ class anasayfaAnkarapage extends StatefulWidget {
 class _anasayfaAnkarapageState extends State<anasayfaAnkarapage> {
   @override
   Widget build(BuildContext context) {
+    List<dynamic> onerilerList1 = [];
+    List<dynamic> onerilerList2 = [];
+
+    final _database = FirebaseFirestore.instance;
+
+    final CollectionReference tarihiyerlerRef = _database
+        .collection("Ankara")
+        .doc("Kategoriler")
+        .collection("TarihiYerler");
     return SafeArea(
       child: Scaffold(
         backgroundColor: Color(0xffE7EEF5),
@@ -101,7 +113,13 @@ class _anasayfaAnkarapageState extends State<anasayfaAnkarapage> {
                       height: 10,
                     ),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    tarihiyerleranaAnkarapage()));
+                      },
                       child: Padding(
                         padding: const EdgeInsets.only(
                             right: 15, left: 15, top: 10, bottom: 10),
@@ -175,7 +193,7 @@ class _anasayfaAnkarapageState extends State<anasayfaAnkarapage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => anasayfaAnkarapage(),
+                              builder: (context) => restorananaAnkarapage(),
                             ),
                           );
                         },
@@ -221,13 +239,88 @@ class _anasayfaAnkarapageState extends State<anasayfaAnkarapage> {
               padding: const EdgeInsets.only(left: 40),
               child: Row(
                 children: [
-                  populeryerlerolustur(
-                      "assets/images/anitkabir.jpg", "\nAnıtkabir"),
+                  FutureBuilder<QuerySnapshot>(
+                      future: tarihiyerlerRef
+                          .where("adi", isEqualTo: "Anıtkabir")
+                          .get(),
+                      builder: (context, snapshot) {
+                        if (!snapshot.hasData) {
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        } else {
+                          var query = snapshot.data;
+                          query!.docs.forEach((doc) async {
+                            var veri =
+                                await doc.data() as Map<dynamic, dynamic>;
+                            onerilerList1.add(veri);
+                          });
+                        }
+                        return InkWell(
+                          onTap: () {
+                            String adi = onerilerList1[0]["adi"];
+                            String adres = onerilerList1[0]["adres"];
+
+                            String fotograf = onerilerList1[0]["fotograf"];
+                            String hakkinda = onerilerList1[0]["hakkinda"];
+                            String semt = onerilerList1[0]["semt"];
+                            String ulasim = onerilerList1[0]["ulasim"];
+
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      tarihiyerlerdetayAnkarapage(adi, adres,
+                                          fotograf, hakkinda, semt, ulasim)),
+                            );
+                          },
+                          child: populeryerlerolustur(
+                              "assets/images/anitkabir.jpg", "\nAnıtkabir"),
+                        );
+                      }),
                   SizedBox(
                     width: 15,
                   ),
-                  populeryerlerolustur("assets/images/KocatepeCamiAnkara.jpg",
-                      "\nKocatepe Camii"),
+                  FutureBuilder<QuerySnapshot>(
+                      future: tarihiyerlerRef
+                          .where("adi", isEqualTo: "Kocatepe Cami")
+                          .get(),
+                      builder: (context, snapshot) {
+                        if (!snapshot.hasData) {
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        } else {
+                          var query = snapshot.data;
+                          query!.docs.forEach((doc) async {
+                            var veri =
+                                await doc.data() as Map<dynamic, dynamic>;
+                            onerilerList2.add(veri);
+                          });
+                        }
+                        return InkWell(
+                          onTap: () {
+                            String adi = onerilerList2[0]["adi"];
+                            String adres = onerilerList2[0]["adres"];
+
+                            String fotograf = onerilerList2[0]["fotograf"];
+                            String hakkinda = onerilerList2[0]["hakkinda"];
+                            String semt = onerilerList2[0]["semt"];
+                            String ulasim = onerilerList2[0]["ulasim"];
+
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      tarihiyerlerdetayAnkarapage(adi, adres,
+                                          fotograf, hakkinda, semt, ulasim)),
+                            );
+                          },
+                          child: populeryerlerolustur(
+                              "assets/images/KocatepeCamiAnkara.jpg",
+                              "\nKocatepe Camii"),
+                        );
+                      }),
                 ],
               ),
             ),

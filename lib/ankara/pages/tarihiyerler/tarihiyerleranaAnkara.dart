@@ -74,18 +74,20 @@ class _tarihiyerleranaAnkarapageState extends State<tarihiyerleranaAnkarapage> {
                                         tarihiyerlerList[index]["hakkinda"];
                                     String semt =
                                         tarihiyerlerList[index]["semt"];
+                                    String ulasim =
+                                        tarihiyerlerList[index]["ulasim"];
 
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
                                               tarihiyerlerdetayAnkarapage(
-                                                adi,
-                                                adres,
-                                                fotograf,
-                                                hakkinda,
-                                                semt,
-                                              )),
+                                                  adi,
+                                                  adres,
+                                                  fotograf,
+                                                  hakkinda,
+                                                  semt,
+                                                  ulasim)),
                                     );
                                   },
                                   child: Container(

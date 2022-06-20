@@ -1,9 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:goturkey/arasecimler/sehirsec.dart';
 import 'package:goturkey/izmir/pages/hotel/hotelyildizIzmir.dart';
 import 'package:goturkey/izmir/pages/manzaralar/manzaralaranasayfaIzmir.dart';
 import 'package:goturkey/izmir/pages/materials/navigationIzmir.dart';
+import 'package:goturkey/izmir/pages/restorant/restorananaIzmir.dart';
 import 'package:goturkey/izmir/pages/tarihiyerler/tarihiyerleranasayfaIzmir.dart';
+import 'package:goturkey/izmir/pages/tarihiyerler/tarihiyerlerdetaysayfaIzmir.dart';
+import 'package:goturkey/materials/anasayfaAppbar.dart';
 
 class anasayfaizmirpage extends StatefulWidget {
   const anasayfaizmirpage({Key? key}) : super(key: key);
@@ -15,57 +19,21 @@ class anasayfaizmirpage extends StatefulWidget {
 class _anasayfaizmirpageState extends State<anasayfaizmirpage> {
   @override
   Widget build(BuildContext context) {
+    List<dynamic> onerilerList1 = [];
+    List<dynamic> onerilerList2 = [];
+
+    final _database = FirebaseFirestore.instance;
+
+    final CollectionReference tarihiyerlerRef = _database
+        .collection("İzmir")
+        .doc("Kategoriler")
+        .collection("TarihiYerler");
     return SafeArea(
       child: Scaffold(
+        appBar: anasayfaAppbar(context, "İzmir"),
         backgroundColor: Color(0xffE7EEF5),
         body: SingleChildScrollView(
           child: Column(children: [
-            Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 40, left: 140),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.pin_drop,
-                        size: 20,
-                        color: Color(0xff4A9CC9),
-                      ),
-                      SizedBox(
-                        width: 7,
-                      ),
-                      InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => sehirsecpage(),
-                            ),
-                          );
-                        },
-                        child: Text(
-                          "İzmir",
-                          style: TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xff2C1E40),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Spacer(),
-                Padding(
-                  padding: const EdgeInsets.only(top: 40, right: 25),
-                  child: Icon(
-                    Icons.more_vert,
-                    size: 25,
-                    color: Color(0xff2C1E40),
-                  ),
-                ),
-              ],
-            ),
             SizedBox(
               height: 25,
             ),
@@ -101,7 +69,12 @@ class _anasayfaizmirpageState extends State<anasayfaizmirpage> {
                       height: 10,
                     ),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => tarihiyerlerIzmirpage()));
+                      },
                       child: Padding(
                         padding: const EdgeInsets.only(
                             right: 15, left: 15, top: 10, bottom: 10),
@@ -175,7 +148,7 @@ class _anasayfaizmirpageState extends State<anasayfaizmirpage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => anasayfaizmirpage(),
+                              builder: (context) => restorananaIzmir(),
                             ),
                           );
                         },
@@ -221,13 +194,89 @@ class _anasayfaizmirpageState extends State<anasayfaizmirpage> {
               padding: const EdgeInsets.only(left: 40),
               child: Row(
                 children: [
-                  populeryerlerolustur(
-                      "assets/images/izmirEfesAntik.jpg", "Efes\nAntik Kenti"),
+                  FutureBuilder<QuerySnapshot>(
+                      future: tarihiyerlerRef
+                          .where("adi", isEqualTo: "Smyrna Antik Kenti")
+                          .get(),
+                      builder: (context, snapshot) {
+                        if (!snapshot.hasData) {
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        } else {
+                          var query = snapshot.data;
+                          query!.docs.forEach((doc) async {
+                            var veri =
+                                await doc.data() as Map<dynamic, dynamic>;
+                            onerilerList1.add(veri);
+                          });
+                        }
+                        return InkWell(
+                          onTap: () {
+                            String adi = onerilerList1[0]["adi"];
+                            String adres = onerilerList1[0]["adres"];
+
+                            String fotograf = onerilerList1[0]["fotograf"];
+                            String hakkinda = onerilerList1[0]["hakkinda"];
+                            String semt = onerilerList1[0]["semt"];
+                            String ulasim = onerilerList1[0]["ulasim"];
+
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      tarihiyerlerdetayIzmirpage(adi, adres,
+                                          fotograf, hakkinda, semt, ulasim)),
+                            );
+                          },
+                          child: populeryerlerolustur(
+                              "assets/images/izmirEfesAntik.jpg",
+                              "Efes\nAntik Kenti"),
+                        );
+                      }),
                   SizedBox(
                     width: 15,
                   ),
-                  populeryerlerolustur("assets/images/izmirSaatKulesi.jpg",
-                      "İzmir\nSaat Kulesi"),
+                  FutureBuilder<QuerySnapshot>(
+                      future: tarihiyerlerRef
+                          .where("adi", isEqualTo: "İzmir Saat Kulesi")
+                          .get(),
+                      builder: (context, snapshot) {
+                        if (!snapshot.hasData) {
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        } else {
+                          var query = snapshot.data;
+                          query!.docs.forEach((doc) async {
+                            var veri =
+                                await doc.data() as Map<dynamic, dynamic>;
+                            onerilerList2.add(veri);
+                          });
+                        }
+                        return InkWell(
+                          onTap: () {
+                            String adi = onerilerList2[0]["adi"];
+                            String adres = onerilerList2[0]["adres"];
+
+                            String fotograf = onerilerList2[0]["fotograf"];
+                            String hakkinda = onerilerList2[0]["hakkinda"];
+                            String semt = onerilerList2[0]["semt"];
+                            String ulasim = onerilerList2[0]["ulasim"];
+
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      tarihiyerlerdetayIzmirpage(adi, adres,
+                                          fotograf, hakkinda, semt, ulasim)),
+                            );
+                          },
+                          child: populeryerlerolustur(
+                              "assets/images/izmirSaatKulesi.jpg",
+                              "İzmir\nSaat Kulesi"),
+                        );
+                      }),
                 ],
               ),
             ),

@@ -10,6 +10,13 @@ class Auth {
     return userCredentials.user;
   }
 
+  Future<void> cloudkullaniciolustur(String uid, String kullaniciadi,
+      String eposta, CollectionReference kullaniciRef) async {
+    return await kullaniciRef
+        .doc(uid)
+        .set({"kullaniciAdi": kullaniciadi, "eposta": eposta});
+  }
+
   Future<User?> emaililekullanicigirisi(String email, String sifre) async {
     final userCredentials = await _firebaseAuth.signInWithEmailAndPassword(
         email: email, password: sifre);

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:goturkey/login.dart';
@@ -17,9 +18,16 @@ class registerpage extends StatefulWidget {
 class _registerpageState extends State<registerpage> {
   @override
   Widget build(BuildContext context) {
+    List<dynamic> kullaniciList = [];
     final _registerFormKey = GlobalKey<FormState>();
     final _emailController = TextEditingController();
     final _sifreController = TextEditingController();
+    final _kullaniciadiController = TextEditingController();
+
+    final _database = FirebaseFirestore.instance;
+
+    final CollectionReference kullaniciRef =
+        _database.collection("Kullanıcılar");
 
     return SafeArea(
       child: Scaffold(
@@ -60,6 +68,7 @@ class _registerpageState extends State<registerpage> {
                               height: 20,
                             ),
                             TextFormField(
+                              controller: _kullaniciadiController,
                               validator: (value) {
                                 if (value!.isEmpty) {
                                   return "Alan Boş Bırakılamaz";
@@ -125,13 +134,37 @@ class _registerpageState extends State<registerpage> {
                             ),
                             ElevatedButton(
                               onPressed: () async {
+                                /* kullaniciRef.get().then((value) {
+                                  value.docs.forEach((element) {
+                                    var veri =
+                                        element.data() as Map<dynamic, dynamic>;
+                                    kullaniciList.add(veri);
+                                  });
+                                });*/
                                 if (_registerFormKey.currentState!.validate()) {
+                                  /*for (int i = 0;
+                                      i < kullaniciList.length;
+                                      i++) {
+                                    if (kullaniciList[i]["eposta"] ==
+                                            _emailController.text ||
+                                        kullaniciList[i]["kullaniciAd"]) {
+                                      _showHataMyDialog();
+                                    }
+                                  }*/
                                   final user = await Provider.of<Auth>(context,
                                           listen: false)
                                       .emaililekullaniciolustur(
                                           _emailController.text,
                                           _sifreController.text);
-                                  if (!user!.emailVerified) {
+                                  var uid = await user!.uid;
+                                  await Provider.of<Auth>(context,
+                                          listen: false)
+                                      .cloudkullaniciolustur(
+                                          uid,
+                                          _kullaniciadiController.text,
+                                          _emailController.text,
+                                          kullaniciRef);
+                                  if (!user.emailVerified) {
                                     await user.sendEmailVerification();
                                   }
                                   print(user.emailVerified);
@@ -223,6 +256,33 @@ class _registerpageState extends State<registerpage> {
                   height: 20,
                 ),
                 Text('Onay linkine tıklayıp tekrar giriş yapmalısınız'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Anladım'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _showHataMyDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Kullanıcı Bulunuyor'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: const <Widget>[
+                Text('Aynı Eposta veya Kullanıcı adına sahip kullanıcı mevcut'),
               ],
             ),
           ),

@@ -9,7 +9,7 @@ AppBar appbarekle(BuildContext context, String sayfaadi) {
         Navigator.pop(context);
       },
       child: Padding(
-        padding: const EdgeInsets.only(top: 35, left: 25),
+        padding: const EdgeInsets.only(top: 20, left: 25),
         child: Icon(
           Icons.arrow_back_ios,
           size: 25,
@@ -18,9 +18,7 @@ AppBar appbarekle(BuildContext context, String sayfaadi) {
       ),
     ),
     title: Padding(
-      padding: const EdgeInsets.only(
-        top: 35,
-      ),
+      padding: const EdgeInsets.only(top: 20, right: 55),
       child: Center(
         child: Text(
           "$sayfaadi",
@@ -32,15 +30,5 @@ AppBar appbarekle(BuildContext context, String sayfaadi) {
         ),
       ),
     ),
-    actions: [
-      Padding(
-        padding: const EdgeInsets.only(top: 35, right: 25),
-        child: Icon(
-          Icons.more_vert,
-          size: 25,
-          color: Color(0xff2C1E40),
-        ),
-      ),
-    ],
   );
 }

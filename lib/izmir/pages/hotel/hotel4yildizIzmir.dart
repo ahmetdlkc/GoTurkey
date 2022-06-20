@@ -90,18 +90,18 @@ class _hotel4yildizIzmirpageState extends State<hotel4yildizIzmirpage> {
                                       MaterialPageRoute(
                                           builder: (context) =>
                                               hotelanasayfapageIzmir(
-                                                  adi,
-                                                  adres,
-                                                  fiyat,
-                                                  fotograf,
-                                                  hakkinda,
-                                                  puan,
-                                                  tel,
-                                                  olanak1,
-                                                  olanak2,
-                                                  olanak3,
-                                                  olanak4,
-                                                  olanak5)),
+                                                adi,
+                                                adres,
+                                                fiyat,
+                                                fotograf,
+                                                hakkinda,
+                                                puan,
+                                                tel,
+                                                olanak1,
+                                                olanak2,
+                                                olanak3,
+                                                olanak4,
+                                              )),
                                     );
                                   },
                                   child: Container(
